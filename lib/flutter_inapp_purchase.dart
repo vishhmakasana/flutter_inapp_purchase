@@ -368,12 +368,11 @@ class FlutterInappPurchase {
   /// Acknowledge a purchase on `Android`.
   ///
   /// No effect on `iOS`, whose iap purchases are consumed at the time of purchase.
-  Future<String?> acknowledgePurchaseAndroid(String token, String devPayload) async {
+  Future<String?> acknowledgePurchaseAndroid(String token) async {
     if (_platform.isAndroid) {
       return await _channel
           .invokeMethod('acknowledgePurchase', <String, dynamic>{
         'token': token,
-        'devPayload': devPayload
       });
     } else if (_platform.isIOS) {
       return 'no-ops in ios';
@@ -450,7 +449,7 @@ class FlutterInappPurchase {
   ///
   /// Call this after finalizing server-side validation of the reciept.
   Future<String?> finishTransaction(PurchasedItem purchasedItem,
-      {bool isConsumable = false, String devPayload = ''}) async {
+      {bool isConsumable = false}) async {
     if (_platform.isAndroid) {
       if (isConsumable) {
         return await _channel.invokeMethod('consumeProduct', <String, dynamic>{
@@ -460,7 +459,6 @@ class FlutterInappPurchase {
         return await _channel
             .invokeMethod('acknowledgePurchase', <String, dynamic>{
           'token': purchasedItem.purchaseToken,
-          'devPayload': devPayload,
         });
       }
     } else if (_platform.isIOS) {

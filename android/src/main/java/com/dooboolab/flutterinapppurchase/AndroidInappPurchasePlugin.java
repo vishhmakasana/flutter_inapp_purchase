@@ -501,7 +501,6 @@ public class AndroidInappPurchasePlugin implements MethodCallHandler, Applicatio
      */
     else if (call.method.equals("acknowledgePurchase")) {
       final String token = call.argument("token");
-      final String devPayload = call.argument("devPayload");
 
       if (billingClient == null || !billingClient.isReady()) {
         safeResult.error(call.method, "IAP not prepared. Check if Google Play service is available.", "");
@@ -511,7 +510,6 @@ public class AndroidInappPurchasePlugin implements MethodCallHandler, Applicatio
       AcknowledgePurchaseParams acknowledgePurchaseParams =
         AcknowledgePurchaseParams.newBuilder()
           .setPurchaseToken(token)
-          .setDeveloperPayload(devPayload)
           .build();
       billingClient.acknowledgePurchase(acknowledgePurchaseParams, new AcknowledgePurchaseResponseListener() {
         @Override
